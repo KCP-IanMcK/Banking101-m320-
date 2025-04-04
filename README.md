@@ -1,4 +1,4 @@
-- Kredit aufnehmen (Design pattern anwenden: ev darlehen / hypothek mit interface kredit)
+- Kredit aufnehmen (Design pattern anwenden: Darlehen / Hypothek mit interface kredit)
 - Kredit zurückzahlen
 - Aktuelle Kredithöhe ausgeben
 - Aktien aus einer Liste kaufen und zum Portfolio hinzufügen
