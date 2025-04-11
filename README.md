@@ -1,5 +1,7 @@
 # Banking101
+
 ## Anforderungen
+
 - Kredit aufnehmen
 - Kredit zurückzahlen
 - Aktuelle Kredithöhe ausgeben
@@ -8,14 +10,20 @@
 - Wert des Portfolios in einer Börse ermitteln
 
 ## Designpattern
-Ich verwende das Designpatter "Template Method". Ich habe eine abstrakte Klasse Credit erstellt und zwei Klassen (Mortage und Loan), welche von Credit erben.
+
+Ich verwende das Designpatter "Template Method". Ich habe eine abstrakte Klasse Credit erstellt und zwei Klassen (
+Mortage und Loan), welche von Credit erben. Somit dient Credit quasi als "Bauplan" für die zwei tatsächlichen Kredite.
 
 ## Geplantes Klassendiagramm
+
 ![img.png](img.png)
 
 ## Tatsächliches Klassendiagramm
+
 ![img_3.png](img_3.png)
+
 ### Änderungen
+
 CreditHandler:
 Returntyp von payBackLoan geändert von int zu boolean
 Returntyp von takeUpMortage von void zu boolean geändert
@@ -60,4 +68,5 @@ Methode getClassName hinzugefügt
 Return types zu void geändert
 
 ## Sequenzdiagramm
+
 ![img_2.png](img_2.png)
