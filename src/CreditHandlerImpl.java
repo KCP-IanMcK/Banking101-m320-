@@ -29,7 +29,7 @@ public class CreditHandlerImpl implements CreditHandler {
     @Override
     public boolean payBackLoan(int amount, Credit credit) {
         boolean containsLoan = credits.stream()
-                .anyMatch(creditToCheck -> credit instanceof Loan);
+                .anyMatch(creditToCheck -> creditToCheck instanceof Loan);
         if (containsLoan) {
             for (Credit creditToCheck : credits) {
                 if (creditToCheck.equals(credit)) {
@@ -52,7 +52,7 @@ public class CreditHandlerImpl implements CreditHandler {
     @Override
     public boolean extendDurationLoan(int duration, Credit credit) {
         boolean containsLoan = credits.stream()
-                .anyMatch(creditToCheck -> credit instanceof Loan);
+                .anyMatch(creditToCheck -> creditToCheck instanceof Loan);
         if (containsLoan) {
             for (Credit creditToCheck : credits) {
                 if (creditToCheck.equals(credit)) {
