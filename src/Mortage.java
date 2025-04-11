@@ -5,18 +5,18 @@ public class Mortage extends Credit {
     }
 
     @Override
-    int takeUpCredit(int amount) {
-        return 0;
+    void takeUpCredit(int amount) {
+        //Wird nicht verwendet
     }
 
     @Override
-    int payBackCredit(int amount) {
-        return 0;
+    void payBackCredit(int amount) {
+        setDept(getDept() - amount);
     }
 
     @Override
-    int extendCreditDuration(int timeInMonths) {
-        return 0;
+    void extendDuration(int duration) {
+        setDuration(getDuration() + duration);
     }
 
     @Override

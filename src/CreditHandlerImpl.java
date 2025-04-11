@@ -15,7 +15,7 @@ public class CreditHandlerImpl implements CreditHandler {
         if (credits.contains(Loan.class)) {
             for (Credit credit : credits) {
                 if (credit.getClass() == Loan.class) {
-                    credit.setDept(credit.getDept() + amount);
+                    credit.takeUpCredit(amount);
                     kontoHandler.addToKonto(amount);
                 }
             }
@@ -27,16 +27,36 @@ public class CreditHandlerImpl implements CreditHandler {
     }
 
     @Override
-    public boolean payBackLoan(int amount) {
+    public boolean payBackLoan(int amount, Credit credit) {
         boolean containsLoan = credits.stream()
-                .anyMatch(credit -> credit instanceof Loan);
+                .anyMatch(creditToCheck -> credit instanceof Loan);
         if (containsLoan) {
-            for (Credit credit : credits) {
-                if (credit.getClass() == Loan.class) {
-                    credit.setDept(credit.getDept() - amount);
-                    if (credit.getDept() == 0) {
-                        credits.remove(credit);
+            for (Credit creditToCheck : credits) {
+                if (creditToCheck.equals(credit)) {
+                    if (creditToCheck.getDept() < amount) {
+                        return false;
                     }
+                    creditToCheck.payBackCredit(amount);
+                    if (creditToCheck.getDept() == 0) {
+                        credits.remove(creditToCheck);
+                    }
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean extendDurationLoan(int duration, Credit credit) {
+        boolean containsLoan = credits.stream()
+                .anyMatch(creditToCheck -> credit instanceof Loan);
+        if (containsLoan) {
+            for (Credit creditToCheck : credits) {
+                if (creditToCheck.equals(credit)) {
+                    creditToCheck.extendDuration(duration);
                     return true;
                 }
             }
@@ -73,10 +93,30 @@ public class CreditHandlerImpl implements CreditHandler {
         if (containsMortage) {
             for (Credit credit : credits) {
                 if (credit.getClass() == Mortage.class) {
-                    credit.setDept(credit.getDept() - amount);
+                    if (credit.getDept() < amount) {
+                        return false;
+                    }
+                    credit.payBackCredit(amount);
                     if (credit.getDept() == 0) {
                         credits.remove(credit);
                     }
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean extendDurationMortage(int duration) {
+        boolean containsMortage = credits.stream()
+                .anyMatch(credit -> credit instanceof Mortage);
+        if (containsMortage) {
+            for (Credit credit : credits) {
+                if (credit.getClass() == Mortage.class) {
+                    credit.extendDuration(duration);
                     return true;
                 }
             }

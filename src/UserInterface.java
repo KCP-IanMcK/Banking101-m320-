@@ -82,12 +82,14 @@ public class UserInterface {
             System.out.println(credit.getClassName() + ": " + credit.getDept() + "CHF, " + credit.getDuration() + " Monate Laufzeit");
         }
         System.out.println();
-        answer = getAnswer("Möchten Sie einen Kredit aufnehmen[1] oder eine Kredit zurückzahlen[2]?", 1, 2);
+        answer = getAnswer("Möchten Sie einen Kredit aufnehmen[1], einen Kredit zurückzahlen[2] oder eine Kreditfrist verlängern[3]?", 1, 3);
 
         if (answer == 1) {
             takeUp();
-        } else {
+        } else if(answer == 2) {
             payBack();
+        } else {
+            extendDuration();
         }
     }
 
@@ -98,7 +100,7 @@ public class UserInterface {
             int amount = getInt("Geben Sie die Höhe des Darlehens an: ", false);
             int duration = getInt("Geben Sie die Laufzeit des Darlehens in Monaten an: ", false);
             creditHandler.takeUpLoan(amount, duration);
-            System.out.println("Ihr Darlehen beträgt neu: " + creditHandler.getLoan().getFirst().getDept());
+            System.out.println("Ihr Darlehen wurde genehmigt");
         } else {
             int amount = getInt("Geben Sie die Höhe der Hypothek an: ", false);
             int duration = getInt("Geben Sie die Laufzeit der Hypothek in Monaten an: ", false);
@@ -115,12 +117,19 @@ public class UserInterface {
         int answer = getAnswer("Möchten Sie ein Darlehen[1] oder eine Hypothek[2] zurückzahlen?", 1, 2);
         if (answer == 1) {
             if (!creditHandler.getLoan().isEmpty()) {
+                int i = 1;
+                for (Loan loan : creditHandler.getLoan()) {
+                    System.out.println(i + ": " + loan.getDept() + " CHF, " + loan.getDuration() + " Monate");
+                    i++;
+                }
+                int answer2 = getAnswer("Welches Darlehen möchten Sie zurückzahlen?", 1, i -1);
+                Loan selectedLoan = creditHandler.getLoan().get(answer2 -1);
                 int amount = getInt("Geben Sie den Betrag an, welchen Sie zurückzahlen möchten: ", true);
-                boolean worked = creditHandler.payBackLoan(amount);
+                boolean worked = creditHandler.payBackLoan(amount, selectedLoan);
                 if (worked) {
                     System.out.println("Betrag wurde erfolgreich zurückgezahlt");
                 } else {
-                    System.out.println("Sie haben kein Darlehen");
+                    System.out.println("Sie wollten zu viel zurückzahlen, versuchen Sie es erneut");
                 }
             } else {
                 System.out.println("Sie haben kein Darlehen");
@@ -132,6 +141,42 @@ public class UserInterface {
                 boolean worked = creditHandler.payBackMortage(amount);
                 if (worked) {
                     System.out.println("Betrag wurde erfolgreich zurückgezahlt");
+                } else {
+                    System.out.println("Sie wollten zu viel zurückzahlen, versuchen Sie es erneut");
+                }
+            } else {
+                System.out.println("Sie haben keine Hypothek");
+            }
+        }
+    }
+
+    private static void extendDuration() {
+        int answer = getAnswer("Möchten Sie ein Darlehen[1] oder eine Hypothek[2] verlängern?", 1, 2);
+        if (answer == 1) {
+            if (!creditHandler.getLoan().isEmpty()) {
+                int i = 1;
+                for (Loan loan : creditHandler.getLoan()) {
+                    System.out.println(i + ": " + loan.getDept() + " CHF, " + loan.getDuration() + " Monate");
+                    i++;
+                }
+                int answer2 = getAnswer("Welches Darlehen möchten Sie verlängern?", 1, i -1);
+                Loan selectedLoan = creditHandler.getLoan().get(answer2 -1);
+                int duration = getInt("Geben Sie die Verlängerungsdauer in Monaten an: ", false);
+                boolean worked = creditHandler.extendDurationLoan(duration, selectedLoan);
+                if (worked) {
+                    System.out.println("Das Darlehen wurde erfolgreich verlängert");
+                } else {
+                    System.out.println("Sie haben kein Darlehen");
+                }
+            } else {
+                System.out.println("Sie haben kein Darlehen");
+            }
+        } else {
+            if (!creditHandler.getMortage().isEmpty()) {
+                int duration = getInt("Geben Sie die Verlängerungsdauer in Monaten an: ", false);
+                boolean worked = creditHandler.extendDurationMortage(duration);
+                if (worked) {
+                    System.out.println("Die Hypothek wurde erfolgreich verlängert");
                 } else {
                     System.out.println("Sie haben keine Hypothek");
                 }

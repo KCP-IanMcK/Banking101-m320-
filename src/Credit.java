@@ -7,9 +7,9 @@ public abstract class Credit {
         this.duration = duration;
     }
 
-    abstract int takeUpCredit(int amount);
-    abstract int payBackCredit(int amount);
-    abstract int extendCreditDuration(int timeInMonths);
+    abstract void takeUpCredit(int amount);
+    abstract void payBackCredit(int amount);
+    abstract void extendDuration(int duration);
     abstract String getClassName();
 
     public int getDept() {
